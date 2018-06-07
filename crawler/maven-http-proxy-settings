@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -ex
+
+if [ -z "$http_proxy" ] ; then
+  exit 0
+fi
+
+mkdir -p ~/.m2
+
+proxy_host=$(echo $http_proxy | awk -F/ '{print $3}' | awk -F: '{print $1}')
+proxy_port=$(echo $http_proxy | awk -F/ '{print $3}' | awk -F: '{print $2}')
+no_proxy_hosts=$(echo $no_proxy | tr ',' '|')
+
+cat > ~/.m2/settings.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <proxies>
+    <proxy>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>$proxy_host</host>
+      <port>$proxy_port</port>
+      <nonProxyHosts>$no_proxy_hosts</nonProxyHosts>
+    </proxy>
+    <proxy>
+      <active>true</active>
+      <protocol>https</protocol>
+      <host>$proxy_host</host>
+      <port>$proxy_port</port>
+      <nonProxyHosts>$no_proxy_hosts</nonProxyHosts>
+    </proxy>
+  </proxies>
+</settings>
+EOF

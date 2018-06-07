@@ -27,12 +27,20 @@ services:
   frontend:
     build:
       context: frontend/
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     volumes:
       - frontend:/dist:ro
 
   controller:
     build:
       context: controller/
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     environment:
       AZURE_SUBKEY: "foobarsupersecret"
       GCS_SEARCHID: "foobarsupersecret"
@@ -51,6 +59,10 @@ services:
   crawler:
     build:
       context: crawler/
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     depends_on:
       - elasticsearch
     environment:
@@ -61,6 +73,10 @@ services:
   elasticsearch:
     build:
       context: elasticsearch/
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - elasticdata:/usr/share/elasticsearch/data
@@ -81,6 +97,10 @@ services:
   kibana:
     build:
       context: kibana/
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     volumes:
       - ./kibana/config/:/usr/share/kibana/config:ro
     #ports:

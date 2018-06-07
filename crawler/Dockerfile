@@ -1,6 +1,13 @@
 # build jar
 FROM zenika/alpine-maven:3-jdk8 as build
+
 WORKDIR /topology
+
+# Enable Maven behind HTTP proxies.
+COPY maven-http-proxy-settings /root/
+RUN set -ex \
+    && /root/maven-http-proxy-settings
+
 # first download mvn deps
 COPY pom.xml .
 RUN mvn -B dependency:resolve-plugins dependency:resolve
