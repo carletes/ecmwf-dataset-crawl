@@ -19,6 +19,7 @@ cat > ~/.m2/settings.xml <<EOF
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
   <proxies>
     <proxy>
+      <id>http</id>
       <active>true</active>
       <protocol>http</protocol>
       <host>$proxy_host</host>
@@ -26,6 +27,7 @@ cat > ~/.m2/settings.xml <<EOF
       <nonProxyHosts>$no_proxy_hosts</nonProxyHosts>
     </proxy>
     <proxy>
+      <id>https</id>
       <active>true</active>
       <protocol>https</protocol>
       <host>$proxy_host</host>
